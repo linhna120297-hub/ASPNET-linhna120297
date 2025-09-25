@@ -1,7 +1,7 @@
 # Website Cửa Hàng Linh Kiện Điện Tử - ASP.NET Core MVC
 
 ## Mô tả dự án
-Đây là website bán linh kiện điện tử được chuyển đổi từ React/TypeScript sang ASP.NET Core MVC, giữ nguyên giao diện và chức năng.
+Đây là website bán linh kiện điện tử ASP.NET Core MVC
 
 ## Công nghệ sử dụng
 - **Framework**: ASP.NET Core 9.0 MVC
