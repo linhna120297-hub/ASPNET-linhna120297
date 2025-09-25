@@ -182,13 +182,4 @@ Hệ thống đã được cấu hình với dữ liệu mẫu bao gồm:
 - [ ] Real-time chat support
 - [ ] Mobile app với Xamarin/MAUI
 
-## Liên hệ và hỗ trợ
-- **Người phát triển**: Đoàn Phước Miền
-- **Email**: [email@example.com]
-- **Dự án**: Website Linh Kiện Điện Tử ASP.NET Core MVC
 
-## License
-Dự án này được phát triển cho mục đích học tập và thương mại.
-
----
-*Cập nhật lần cuối: 23/09/2024*
