@@ -1,0 +1,53 @@
+@model Product
+@{
+    ViewData["Title"] = "Thêm sản phẩm";
+}
+
+<h2>Thêm sản phẩm mới</h2>
+
+<form method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Tên sản phẩm</label>
+                <input asp-for="Name" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Danh mục</label>
+                <select asp-for="CategoryId" class="form-select" required>
+                    <option value="">Chọn danh mục</option>
+                    @foreach (var category in ViewBag.Categories as List<Category>)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Giá</label>
+                <input asp-for="Price" type="number" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tồn kho</label>
+                <input asp-for="StockQuantity" type="number" class="form-control" required />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">URL hình ảnh</label>
+                <input asp-for="ImageUrl" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Thương hiệu</label>
+                <input asp-for="Brand" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+        <a href="@Url.Action("Products")" class="btn btn-secondary">Hủy</a>
+    </div>
+</form>

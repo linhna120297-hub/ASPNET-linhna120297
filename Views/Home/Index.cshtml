@@ -1,0 +1,264 @@
+@{
+    ViewData["Title"] = "Trang chủ";
+    var categories = ViewBag.Categories as List<ElectronicsStore.Models.Category>;
+    var featuredProducts = ViewBag.FeaturedProducts as List<ElectronicsStore.Models.Product>;
+}
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-5" style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Linh kiện điện tử
+                    <span class="text-info">chất lượng cao</span>
+                </h1>
+                <p class="lead mb-4 text-light">
+                    Chuyên cung cấp các linh kiện điện tử, thiết bị máy tính với giá cả hợp lý 
+                    và chất lượng được đảm bảo. Phục vụ tận tâm, giao hàng nhanh chóng.
+                </p>
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                    <a asp-controller="Products" asp-action="Index" class="btn btn-light btn-lg text-primary fw-semibold">
+                        Xem sản phẩm
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-lg">
+                        Liên hệ tư vấn
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg" 
+                     alt="Electronics Components" class="img-fluid rounded shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="fas fa-truck text-primary fs-2"></i>
+                </div>
+                <h5 class="fw-semibold mb-2">Giao hàng nhanh</h5>
+                <p class="text-muted">Giao hàng trong 24h tại TP.HCM và Hà Nội</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="fas fa-shield-alt text-success fs-2"></i>
+                </div>
+                <h5 class="fw-semibold mb-2">Bảo hành chính hãng</h5>
+                <p class="text-muted">Cam kết bảo hành chính hãng từ nhà sản xuất</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="fas fa-headset text-info fs-2"></i>
+                </div>
+                <h5 class="fw-semibold mb-2">Hỗ trợ 24/7</h5>
+                <p class="text-muted">Đội ngũ kỹ thuật sẵn sàng hỗ trợ mọi lúc</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center">
+                <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="fas fa-credit-card text-warning fs-2"></i>
+                </div>
+                <h5 class="fw-semibold mb-2">Thanh toán linh hoạt</h5>
+                <p class="text-muted">Hỗ trợ nhiều hình thức thanh toán an toàn</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Danh mục sản phẩm</h2>
+            <p class="text-muted fs-5">Khám phá các danh mục linh kiện điện tử đa dạng</p>
+        </div>
+
+        <div class="row g-4">
+            @if (categories != null)
+            {
+                @foreach (var category in categories)
+                {
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <a asp-controller="Products" asp-action="Index" asp-route-category="@category.Slug" 
+                           class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                <div class="card-img-top overflow-hidden" style="height: 200px;">
+                                    <img src="@(category.ImageUrl ?? "https://images.pexels.com/photos/2582932/pexels-photo-2582932.jpeg")" 
+                                         alt="@category.Name" class="w-100 h-100 object-fit-cover">
+                                </div>
+                                <div class="card-body text-center">
+                                    <h6 class="card-title fw-semibold text-dark">@category.Name</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Sản phẩm nổi bật</h2>
+            <p class="text-muted fs-5">Những sản phẩm được khách hàng yêu thích nhất</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            @if (featuredProducts != null)
+            {
+                @foreach (var product in featuredProducts)
+                {
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm hover-lift">
+                            <div class="card-img-top overflow-hidden position-relative" style="height: 200px;">
+                                <img src="@(product.ImageUrl ?? "https://images.pexels.com/photos/2582932/pexels-photo-2582932.jpeg")" 
+                                     alt="@product.Name" class="w-100 h-100 object-fit-cover">
+                                @if (product.IsFeatured)
+                                {
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-2">Nổi bật</span>
+                                }
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title fw-semibold">@product.Name</h6>
+                                <p class="card-text text-muted small flex-grow-1">@product.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-primary fw-bold fs-5">@product.Price.ToString("N0") đ</span>
+                                    <div class="btn-group">
+                                        <a asp-controller="Products" asp-action="Details" asp-route-slug="@product.Slug" 
+                                           class="btn btn-outline-primary btn-sm">
+                                            Chi tiết
+                                        </a>
+                                        <button class="btn btn-primary btn-sm" 
+                                                @(product.StockQuantity <= 0 ? "disabled" : "")
+                                                onclick="addToCartFromHome(@product.Id)">
+                                            <i class="fas fa-cart-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="text-center">
+            <a asp-controller="Products" asp-action="Index" class="btn btn-primary btn-lg">
+                Xem tất cả sản phẩm
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Khách hàng nói gì về chúng tôi</h2>
+        </div>
+
+        <div class="row g-4">
+            @for (int i = 1; i <= 3; i++)
+            {
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                @for (int j = 1; j <= 5; j++)
+                                {
+                                    <i class="fas fa-star text-warning"></i>
+                                }
+                            </div>
+                            <p class="card-text text-muted mb-4">
+                                "Sản phẩm chất lượng tốt, giá cả hợp lý. Nhân viên tư vấn nhiệt tình, 
+                                giao hàng nhanh chóng. Sẽ tiếp tục ủng hộ shop!"
+                            </p>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-secondary rounded-circle me-3" style="width: 40px; height: 40px;"></div>
+                                <div>
+                                    <h6 class="mb-0 fw-semibold">Nguyễn Văn A</h6>
+                                    <small class="text-muted">Khách hàng thân thiết</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+</style>
+
+<script>
+function addToCartFromHome(productId) {
+    fetch('/Cart/AddToCart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `productId=${productId}&quantity=1`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast(data.message, 'success');
+            updateCartCount(data.cartItemCount);
+        } else {
+            showToast(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng', 'error');
+    });
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    }, 3000);
+}
+
+function updateCartCount(count) {
+    const cartBadge = document.getElementById('cart-count');
+    if (cartBadge) {
+        cartBadge.textContent = count;
+    }
+}
+</script>

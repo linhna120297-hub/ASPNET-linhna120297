@@ -1,0 +1,323 @@
+@model ElectronicsStore.Models.Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Products" asp-action="Index">Sản phẩm</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Products" asp-action="Index" asp-route-category="@Model.Category.Slug">@Model.Category.Name</a></li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-0">
+                    <img src="@(Model.ImageUrl ?? "https://images.pexels.com/photos/2582932/pexels-photo-2582932.jpeg")" 
+                         alt="@Model.Name" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <div class="mb-3">
+                <span class="badge bg-primary mb-2">@Model.Category.Name</span>
+                @if (Model.IsFeatured)
+                {
+                    <span class="badge bg-danger mb-2 ms-1">Nổi bật</span>
+                }
+            </div>
+
+            <h1 class="fw-bold mb-3">@Model.Name</h1>
+            
+            <div class="mb-4">
+                <span class="text-primary fw-bold fs-2">@Model.Price.ToString("N0") đ</span>
+            </div>
+
+            <!-- Stock Status -->
+            <div class="mb-4">
+                @if (Model.StockQuantity > 0)
+                {
+                    <div class="d-flex align-items-center text-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <span>Còn hàng (@Model.StockQuantity sản phẩm)</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex align-items-center text-danger">
+                        <i class="fas fa-times-circle me-2"></i>
+                        <span>Hết hàng</span>
+                    </div>
+                }
+            </div>
+
+            <!-- Add to Cart -->
+            <div class="mb-4">
+                <div class="row g-3">
+                    <div class="col-4">
+                        <label class="form-label">Số lượng</label>
+                        <input type="number" class="form-control" value="1" min="1" max="@Model.StockQuantity" id="quantity">
+                    </div>
+                    <div class="col-8 d-flex align-items-end">
+                        <button class="btn btn-primary btn-lg w-100" 
+                                @(Model.StockQuantity <= 0 ? "disabled" : "")
+                                onclick="addToCart(@Model.Id)">
+                            <i class="fas fa-cart-plus me-2"></i>
+                            Thêm vào giỏ hàng
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Features -->
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-truck text-primary me-2"></i>
+                        <small>Giao hàng nhanh</small>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-shield-alt text-success me-2"></i>
+                        <small>Bảo hành chính hãng</small>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-undo text-info me-2"></i>
+                        <small>Đổi trả 7 ngày</small>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-headset text-warning me-2"></i>
+                        <small>Hỗ trợ 24/7</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Share -->
+            <div class="mb-4">
+                <h6 class="fw-semibold mb-2">Chia sẻ:</h6>
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn btn-outline-primary btn-sm">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-info btn-sm">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-success btn-sm">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-link"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Description -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#description" type="button">
+                                Mô tả sản phẩm
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#specifications" type="button">
+                                Thông số kỹ thuật
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reviews" type="button">
+                                Đánh giá (0)
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="description">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h5 class="fw-semibold mb-3">Mô tả chi tiết</h5>
+                                    <p>@(Model.Description ?? "Chưa có mô tả chi tiết cho sản phẩm này.")</p>
+                                    
+                                    <h6 class="fw-semibold mt-4 mb-3">Đặc điểm nổi bật:</h6>
+                                    <ul>
+                                        <li>Chất lượng cao, độ bền tốt</li>
+                                        <li>Hiệu suất ổn định</li>
+                                        <li>Tương thích với nhiều thiết bị</li>
+                                        <li>Bảo hành chính hãng</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-light p-3 rounded">
+                                        <h6 class="fw-semibold mb-3">Thông tin sản phẩm</h6>
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <td>Danh mục:</td>
+                                                <td>@Model.Category.Name</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mã sản phẩm:</td>
+                                                <td>SP@(Model.Id.ToString("D6"))</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tình trạng:</td>
+                                                <td>
+                                                    @if (Model.StockQuantity > 0)
+                                                    {
+                                                        <span class="text-success">Còn hàng</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-danger">Hết hàng</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="specifications">
+                            <h5 class="fw-semibold mb-3">Thông số kỹ thuật</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-semibold">Tên sản phẩm</td>
+                                            <td>@Model.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">Danh mục</td>
+                                            <td>@Model.Category.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">Giá bán</td>
+                                            <td>@Model.Price.ToString("N0") đ</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">Bảo hành</td>
+                                            <td>12 tháng</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="reviews">
+                            <div class="text-center py-4">
+                                <i class="fas fa-star-o fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">Chưa có đánh giá nào</h5>
+                                <p class="text-muted">Hãy là người đầu tiên đánh giá sản phẩm này!</p>
+                                <button class="btn btn-primary">Viết đánh giá</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="fw-bold mb-4">Sản phẩm liên quan</h3>
+            <div class="row g-4">
+                <!-- This would be populated with related products from the same category -->
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-top overflow-hidden" style="height: 200px;">
+                            <img src="https://images.pexels.com/photos/2582932/pexels-photo-2582932.jpeg" 
+                                 alt="Related Product" class="w-100 h-100 object-fit-cover">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">Sản phẩm liên quan</h6>
+                            <p class="text-primary fw-bold">1,500,000 đ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.object-fit-cover {
+    object-fit: cover;
+}
+</style>
+
+<script>
+function addToCart(productId) {
+    const quantity = document.getElementById('quantity').value;
+    
+    fetch('/Cart/AddToCart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+        },
+        body: `productId=${productId}&quantity=${quantity}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Hiển thị thông báo thành công
+            showToast(data.message, 'success');
+            
+            // Cập nhật số lượng trong giỏ hàng ở header
+            updateCartCount(data.cartItemCount);
+        } else {
+            // Hiển thị thông báo lỗi
+            showToast(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng', 'error');
+    });
+}
+
+function showToast(message, type) {
+    // Tạo toast notification
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Tự động ẩn sau 3 giây
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    }, 3000);
+}
+
+function updateCartCount(count) {
+    const cartBadge = document.querySelector('.badge.bg-danger');
+    if (cartBadge) {
+        cartBadge.textContent = count;
+    }
+}
+</script>
